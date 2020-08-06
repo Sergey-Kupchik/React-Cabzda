@@ -15,85 +15,85 @@ type ItemType = {
     title: string
 }
 
+export const Select2 = React.memo(
+    function Select2(props: Select2PropsType) {
 
-export function Select2(props: Select2PropsType) {
-
-    let [active, setActive] = useState<boolean>(false)
-    let [hoveredElementValue, setHoveredElementValue] = useState(props.value)
+        let [active, setActive] = useState<boolean>(false)
+        let [hoveredElementValue, setHoveredElementValue] = useState(props.value)
 
 
-    const toggleItems = () => setActive(!active);
+        const toggleItems = () => setActive(!active);
 
-    const selectItem = props.item.find(i => i.value === props.value);
-    const hoveredItem = props.item.find(i => i.value === hoveredElementValue);
-    const onItemClick = (value: any) => {
-        props.onChage(value);
-        toggleItems();
-    }
-    const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
-        debugger
-        if (e.key === "ArrowDown") {
-            for (let i = 0; i < props.item.length; i++) {
-                if (props.item[i].value === hoveredElementValue) {
-                    if (props.item[i + 1]) {
-                        setHoveredElementValue(props.item[i + 1].value);
-                        props.onChage(props.item[i + 1].value);
+        const selectItem = props.item.find(i => i.value === props.value);
+        const hoveredItem = props.item.find(i => i.value === hoveredElementValue);
+        const onItemClick = (value: any) => {
+            props.onChage(value);
+            toggleItems();
+        }
+        const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
+            debugger
+            if (e.key === "ArrowDown") {
+                for (let i = 0; i < props.item.length; i++) {
+                    if (props.item[i].value === hoveredElementValue) {
+                        if (props.item[i + 1]) {
+                            setHoveredElementValue(props.item[i + 1].value);
+                            props.onChage(props.item[i + 1].value);
+                            return
+                        }
+                        setHoveredElementValue(props.item[i].value);
+                        props.onChage(props.item[i].value)
                         return
                     }
-                    setHoveredElementValue(props.item[i].value);
-                    props.onChage(props.item[i].value)
-                    return
                 }
+                setHoveredElementValue(props.item[0].value);
+                props.onChage(props.item[0].value)
             }
-            setHoveredElementValue(props.item[0].value);
-            props.onChage(props.item[0].value)
-        }
-        if (e.key === "ArrowUp") {
-            for (let i = 0; i < props.item.length; i++) {
-                if (props.item[i].value === hoveredElementValue) {
-                    if (props.item[i - 1]) {
-                        setHoveredElementValue(props.item[i - 1].value);
-                        props.onChage(props.item[i - 1].value);
+            if (e.key === "ArrowUp") {
+                for (let i = 0; i < props.item.length; i++) {
+                    if (props.item[i].value === hoveredElementValue) {
+                        if (props.item[i - 1]) {
+                            setHoveredElementValue(props.item[i - 1].value);
+                            props.onChage(props.item[i - 1].value);
+                            return
+                        }
+                        setHoveredElementValue(props.item[i].value);
+                        props.onChage(props.item[i].value)
                         return
                     }
-                    setHoveredElementValue(props.item[i].value);
-                    props.onChage(props.item[i].value)
-                    return
                 }
+                setHoveredElementValue(props.item[0].value);
+                props.onChage(props.item[0].value)
             }
-            setHoveredElementValue(props.item[0].value);
-            props.onChage(props.item[0].value)
+            if (e.key === "Enter" || e.key === "Escape") {
+                setActive(false)
+            }
+
+
         }
-        if (e.key === "Enter" || e.key === "Escape") {
-            setActive(false)
-        }
 
-
-    }
-
-    return (<>
-            <div className={style.select} onKeyDown={onKeyDown} tabIndex={0}>
+        return (<>
+                <div className={style.select} onKeyDown={onKeyDown} tabIndex={0}>
                 <span className={style.main} onClick={toggleItems}>
                     {selectItem && selectItem.title}
                 </span>
-                {active &&
-                <div className={style.items}>
-                    {props.item.map(i => <div
-                        onMouseEnter={() => {
-                            setHoveredElementValue(i.value)
-                        }}
-                        className={style.item + " " + (hoveredItem === i ? style.selected : "")}
-                        key={i.value}
-                        onClick={() => {
-                            onItemClick(i.value)
-                        }}>
-                        {i.title}
-                    </div>)}
+                    {active &&
+                    <div className={style.items}>
+                        {props.item.map(i => <div
+                            onMouseEnter={() => {
+                                setHoveredElementValue(i.value)
+                            }}
+                            className={style.item + " " + (hoveredItem === i ? style.selected : "")}
+                            key={i.value}
+                            onClick={() => {
+                                onItemClick(i.value)
+                            }}>
+                            {i.title}
+                        </div>)}
+                    </div>
+                    }
                 </div>
-                }
-            </div>
-        </>
-    );
-}
-
+            </>
+        );
+    }
+)
 export default ItemType;

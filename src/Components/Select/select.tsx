@@ -44,58 +44,57 @@ const city: ItemType[] = [
 ]
 
 
-// const head = {
-//     border: "1px solid black",
-//     width: "100px",
-//     // backgroundColor: "#8ee1ed"
-// }
 
 
-export function Select(props: SelectedType) {
-    let [value, setValue] = useState<string>("City")
-    let [collapsed, setCollapsed] = useState<boolean>(false)
-    let [focus, setFocus] = useState<boolean>(false)
+export const Select = React.memo(
+    function Select(props: SelectedType) {
+        let [value, setValue] = useState<string>("City")
+        let [collapsed, setCollapsed] = useState<boolean>(false)
+        let [focus, setFocus] = useState<boolean>(false)
 
 
-    const on = {
-        border: "1px solid black",
-        width: "100px"
-        // backgroundColor: "#8ee1ed"
+        const on = {
+            border: "1px solid black",
+            width: "100px"
+            // backgroundColor: "#8ee1ed"
+        }
+
+        const body = {
+            backgroundColor: focus ? "blue" : "",
+            color: focus ? "white" : "",
+
+        }
+
+
+        const onClick = (item: string) => {
+            setValue(item);
+            setCollapsed(false)
+        }
+
+
+        // const predicat = (value:string)=>{value===props.list}
+
+        return (
+            <div style={on}>
+                <div onClick={() => {
+                    setCollapsed(!collapsed)
+                }}>{value}</div>
+                {collapsed ? props.list.map(i =>
+                    <div
+                        style={body}
+                        onMouseEnter={() => {
+                            setFocus(true)
+                        }}
+                        onClick={() => {
+                            onClick(i.item)
+                        }}
+                        key={i.id}>
+                        {i.item}
+                    </div>) : ""}
+                {/*<div>{!collapsed? props.list.filter(predicat(value))}</div>*/}
+            </div>
+        );
     }
-
-    const body = {
-        backgroundColor: focus ? "blue" : "",
-        color: focus ? "white" : "",
-
-    }
-
-
-    const onClick = (item: string) => {
-        setValue(item);
-        setCollapsed(false)
-    }
-
-
-    // const predicat = (value:string)=>{value===props.list}
-
-    return (
-        <div style={on}>
-            <div onClick={() => {
-                setCollapsed(!collapsed)
-            }}>{value}</div>
-            {collapsed ? props.list.map(i =>
-                <div
-                    style={body}
-                    onMouseEnter={() =>{setFocus(true)}}
-                    onClick={() => {
-                        onClick(i.item)
-                    }}
-                    key={i.id}>
-                    {i.item}
-                </div>) : ""}
-            {/*<div>{!collapsed? props.list.filter(predicat(value))}</div>*/}
-        </div>
-    );
-}
+)
 
 export default Select;

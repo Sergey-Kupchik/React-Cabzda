@@ -8,15 +8,17 @@ type ArticlePropsType = {
 }
 
 
-function UncontrolledAccordion(props: ArticlePropsType) {
-    // let [collapsed2, setCollapsed2] = useState<boolean>(true)
-    let [state, dispatch] = useReducer(reducer, {collapsed: false})
+const UncontrolledAccordion = React.memo(
+    function UncontrolledAccordion(props: ArticlePropsType) {
+        // let [collapsed2, setCollapsed2] = useState<boolean>(true)
+        let [state, dispatch] = useReducer(reducer, {collapsed: false})
 
-    return <div>
-        <AccordionTitle title={props.title} dispatch={() => dispatch(action)} collapsed2={state.collapsed}/>
-        {state.collapsed && <AccordionBody list={props.list}/>}
-    </div>
-}
+        return <div>
+            <AccordionTitle title={props.title} dispatch={() => dispatch(action)} collapsed2={state.collapsed}/>
+            {state.collapsed && <AccordionBody list={props.list}/>}
+        </div>
+    }
+)
 
 type AccordionTitlePropsType = {
     title: string
@@ -24,39 +26,42 @@ type AccordionTitlePropsType = {
     dispatch: () => void
 }
 
-function AccordionTitle(props: AccordionTitlePropsType) {
-    return <h1 onClick={props.dispatch}>{props.title}</h1>
-}
+const AccordionTitle = React.memo(
+    function AccordionTitle(props: AccordionTitlePropsType) {
+        return <h1 onClick={props.dispatch}>{props.title}</h1>
+    }
+)
 
 type AccordionBodyPropsType = {
     list: string
 }
+const AccordionBody = React.memo(
+    function AccordionBody(props: AccordionBodyPropsType) {
+        if (props.list === "job") {
+            return <>
+                <div>Military</div>
+                <div>Waiter</div>
+                <div>Self-employed</div>
+                <div>Web-developer</div>
+            </>
+        } else if (props.list === "meal") {
+            return <>
+                <div>Walnuts</div>
+                <div>Sandwich</div>
+                <div>Peas</div>
+                <div>Potato</div>
+            </>
+        } else {
+            return <>
+                <div>String #1</div>
+                <div>String #2</div>
+                <div>String #3</div>
+                <div>String #4</div>
 
-function AccordionBody(props: AccordionBodyPropsType) {
-    if (props.list === "job") {
-        return <>
-            <div>Military</div>
-            <div>Waiter</div>
-            <div>Self-employed</div>
-            <div>Web-developer</div>
-        </>
-    } else if (props.list === "meal") {
-        return <>
-            <div>Walnuts</div>
-            <div>Sandwich</div>
-            <div>Peas</div>
-            <div>Potato</div>
-        </>
-    } else {
-        return <>
-            <div>String #1</div>
-            <div>String #2</div>
-            <div>String #3</div>
-            <div>String #4</div>
+            </>
+        }
 
-        </>
     }
-
-}
+)
 
 export default UncontrolledAccordion;
